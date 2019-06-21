@@ -1,5 +1,5 @@
 # SSH Executor
-This is a service to execute commands to remote servers by ssh. **Included sudo commands !!!** In addition, it returns in its response the standard-output, as well as the standard-error for each executed command. 
+This is a service to execute receipts (sequence of shell commands)  to remote servers by ssh. **Included sudo commands !!!** In addition, it returns in its response the standard-output, as well as the standard-error for each executed command. 
 Every call to the service can launch so many commands as it's required.
 
 To make it work, **you don't need to install any agents in the target servers**. The only you have to do is create a user account in target servers. In addition, if the recipes you want to execute in these servers include sudo commands, this user account must have sudo privileges. Basically, Sudo privileges are required only if you want to execute a recipe that includes sudo commands. Done that, the service will use this user account to connect by SSH to the remote server, It also will be used to make the remote sudo if the executing command requires it.
@@ -9,7 +9,10 @@ By using SSH to make the recipes remotely, you have all security context SSH pro
 
 On another hand, future versions of this service will allow the use of key exchange as password method replacement. It's pending to be coded.
 
-Saying that still is necessary to fill the SSH user password as an environment variable for the service. You should inject it to the container when it starts in a safety mode.
+Saying that still is necessary to fill the SSH user password as an environment variable for the service. You should inject it into the container when it starts in a safe way.
+
+## Not supported commands
+It's not supported the shell commands with 'su', like 'sudo su *another user*'. It's because the 'su' command starts a new shell process for the new user. When that occurs, these new shell has its own stdout,stdin and stderr. Wich can't be captured by the ssh client. From there execution flux is lost and the recipe hangs.
 
 ## Configuration
 There are six environment variables which must be set to make the service run:
@@ -105,7 +108,14 @@ Alternatively, you also can run as a local service. In this case, you must do:
 ```
 
 ## Architecture
-This service has been coded using [gin-gonic](https://gin-gonic.com/) to build the REST API, and the [ssh Go package](https://godoc.org/golang.org/x/crypto/ssh) to build the SSH logic
+This service has been coded using [gin-gonic](https://gin-gonic.com/) to build the REST API, and the [ssh Go package](https://godoc.org/golang.org/x/crypto/ssh) to build the SSH logic.
+
+I've also used [Alpine Linux](https://alpinelinux.org) to build the Docker images, achieving really light ones:
+```sh
+❯ docker image list
+REPOSITORY                TAG                 IMAGE ID            CREATED             SIZE
+sshexecutor               latest              de80807f2fc3        18 hours ago        23.8MB
+```
 
 ### Packages
 These are the packages that conforms the service:
