@@ -1,0 +1,11 @@
+version: '3'
+services:
+  sshexecutor:
+    build: .
+    network_mode: host
+    environment:
+      SSH_EXECUTOR_API_HOST: localhost
+      SSH_EXECUTOR_API_PORT: 6704
+      SSH_EXECUTOR_API_DEFAULT_SSH_TIMEOUT: 5s
+      SSH_EXECUTOR_USER: theskyinflames
+      SSH_EXECUTOR_PASSWORD: XXXXXXXXX
