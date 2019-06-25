@@ -43,7 +43,9 @@ var (
 					if strings.Contains(msg, "[sudo] ") {
 						_, err := in.Write([]byte(sudoerPassword + "\n"))
 						if err != nil {
-							errChan <- errors.Wrap(err, fmt.Sprintf("some went wrong when trying remote sudo"))
+							if err != io.EOF {
+								errChan <- errors.Wrap(err, fmt.Sprintf("some went wrong when trying remote sudo"))
+							}
 						}
 					}
 				}
