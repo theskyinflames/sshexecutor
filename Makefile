@@ -58,7 +58,7 @@ run:
 
 docker-build:
 	@echo ">>> Docker image building ..."
-	docker build -t $(DOCKER_IMAGE) .
+	docker build --network=host -t $(DOCKER_IMAGE) .
 	@echo
 
 docker-run:
