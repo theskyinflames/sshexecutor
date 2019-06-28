@@ -24,8 +24,8 @@ There are six environment variables which must be set to make the service run:
 
 ## End points
 This service published two endpoints:
-* *[host:port]/check* to allow service status checking
-* *[host:port]/runreceipt* to execute a recipe (a list of commands) in a remote server by SSH
+* *[host:port]/check* to allow service status checking (GET)
+* *[host:port]/runreceipt* to execute a recipe (a list of commands) in a remote server by SSH (POST)
 
 ## Rq message
 The rq message is a JSON message with these fields:
