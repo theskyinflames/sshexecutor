@@ -1,7 +1,6 @@
 FROM golang:1.12.6-alpine3.10
 
-RUN apk add make
-RUN apk add git
+RUN rm -rf /var/cache/apk;mkdir /var/cache/apk;apk add --update --no-cache make git
 
 WORKDIR /go/src/github.com/theskyinflames/sshexecutor
 COPY . .
