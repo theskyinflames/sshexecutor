@@ -44,17 +44,26 @@ func getConfig() (*config.Config, error) {
 	if err != nil {
 		return nil, err
 	}
-	return cfg, nil
+	if len(cfg.SSHPrivateKeyPath) > 0 {
+		err = cfg.LoadSSHPublicKey()
+	}
+	return cfg, err
 }
 
 func main() {
+
+	log := getLogger()
 
 	cfg, err := getConfig()
 	if err != nil {
 		panic(err)
 	}
+	err = cfg.Validate()
+	if err != nil {
+		panic(err)
+	}
 
-	log := getLogger()
+	log.Infof("using SSH public key: [%d]\n", len(cfg.SSHPrivateKey))
 
 	executorSrv := service.NewExecutorSrv(log)
 

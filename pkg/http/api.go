@@ -44,6 +44,12 @@ type (
 )
 
 func (r SSHRecipeRq) Validate() error {
+	if len(r.Host) == 0 {
+		return errors.New("host field can't be empty")
+	}
+	if r.Port == 0 {
+		return errors.New("port field can't zero")
+	}
 	if len(r.Recipe) == 0 {
 		return errors.New("at least, a ssh command must be provided")
 	}
@@ -91,7 +97,7 @@ func (api *API) runRecipe(c *gin.Context) {
 		return
 	}
 
-	ssh := ssh.NewSSHExecutorServer(rq.Host, rq.Port, api.cfg.SSHUser, api.cfg.SSHPassword, api.cfg.SSHPublicKey, api.cfg, api.log)
+	ssh := ssh.NewSSHExecutorServer(rq.Host, rq.Port, api.cfg.SSHUser, api.cfg.SSHPassword, api.cfg.SSHPrivateKey, api.cfg, api.log)
 	result, err := api.controller.RunRecipe(ssh, &rq)
 	if err != nil {
 		api.log.WithFields(logrus.Fields{"error": err.Error()}).Error("something went wrong starting the running the recipe")

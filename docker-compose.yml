@@ -9,4 +9,7 @@ services:
       SSH_EXECUTOR_API_PORT: 6704
       SSH_EXECUTOR_API_DEFAULT_SSH_TIMEOUT: 5s
       SSH_EXECUTOR_USER: theskyinflames
-      SSH_EXECUTOR_PASSWORD: XXXXXXXXX
+      SSH_EXECUTOR_PASSWORD: 
+      SSH_EXECUTOR_PRIVATE_KEY_PATH: /ssh/id_rsa
+    volumes: 
+      - /home/theskyinflames/.ssh:/ssh

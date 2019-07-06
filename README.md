@@ -7,9 +7,8 @@ To make it work, **you don't need to install any agents in the target servers**.
 ## Security aspects
 By using SSH to make the recipes remotely, you have all security context SSH provides. To make a remote server able to be operated by this service, it must to have the user account the SSH Executor service uses to connect. In addition, if the recipes to be executed in this server include sudo commands, the user account has to be suoder.
 
-On another hand, future versions of this service will allow the use of key exchange as password method replacement. It's pending to be coded.
-
-Saying that still is necessary to fill the SSH user password as an environment variable for the service. You should inject it into the container when it starts in a safe way.
+## Authentication methods
+Two SSH authentication methods are supported, **user/password** and **public key exchange**. View *config* package. Any way you choose, you must to inject it into the container the required dataas environment variables when it starts.
 
 ## Not supported commands
 It's not supported the shell commands with 'su', like 'sudo su *another user*'. It's because the 'su' command starts a new shell process for the new user. When that occurs, these new shell has its own stdout,stdin and stderr. Wich can't be captured by the ssh client. From there execution flux is lost and the recipe hangs.

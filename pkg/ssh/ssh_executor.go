@@ -4,7 +4,6 @@ import (
 	"bytes"
 	"fmt"
 	"io"
-	"net"
 	"strings"
 	"sync"
 	"time"
@@ -21,7 +20,7 @@ type (
 		port     int
 		user     string
 		password string // It's also used as sudoer password
-		pubKey   []byte
+		privKey  []byte
 		client   *ssh.Client
 
 		cfg *config.Config
@@ -62,17 +61,21 @@ var (
 	}
 )
 
-func NewSSHExecutorServer(host string, port int, user, password string, pubKey []byte, cfg *config.Config, log *logrus.Logger) *SSHExecutor {
-	return &SSHExecutor{host: host, port: port, user: user, password: password, pubKey: pubKey, cfg: cfg, log: log}
+func NewSSHExecutorServer(host string, port int, user, password string, privKey []byte, cfg *config.Config, log *logrus.Logger) *SSHExecutor {
+	return &SSHExecutor{host: host, port: port, user: user, password: password, privKey: privKey, cfg: cfg, log: log}
 }
 
 func (s *SSHExecutor) getAuthMethod() (ssh.AuthMethod, error) {
-	if len(s.pubKey) > 0 {
-		signer, err := ssh.ParsePrivateKey(s.pubKey)
+	if len(s.privKey) > 0 {
+		upkey, err := ssh.ParseRawPrivateKey(s.privKey)
 		if err != nil {
 			return nil, err
 		}
-		return ssh.PublicKeys(signer), nil
+		usigner, err := ssh.NewSignerFromKey(upkey)
+		if err != nil {
+			return nil, fmt.Errorf("Failed to create new signer, err: %s", err.Error())
+		}
+		return ssh.PublicKeys(usigner), nil
 	}
 	return ssh.Password(s.password), nil
 }
@@ -94,12 +97,10 @@ func (s *SSHExecutor) Connect(timeout time.Duration) error {
 		return err
 	}
 	sshConfig := &ssh.ClientConfig{
-		Timeout: connTimeout,
-		User:    s.user,
-		Auth:    []ssh.AuthMethod{authMethod},
-		HostKeyCallback: func(hostname string, remote net.Addr, key ssh.PublicKey) error {
-			return nil
-		},
+		Timeout:         connTimeout,
+		User:            s.user,
+		Auth:            []ssh.AuthMethod{authMethod},
+		HostKeyCallback: ssh.InsecureIgnoreHostKey(),
 	}
 
 	host := fmt.Sprintf("%s:%d", s.host, s.port)
@@ -121,7 +122,7 @@ func (s *SSHExecutor) Connect(timeout time.Duration) error {
 		time.Sleep(connCheckingInterval)
 	}
 
-	return fmt.Errorf("it has not been possible to connect to %s by ssh on port %s", host)
+	return fmt.Errorf("it has not been possible to connect to %s ", host)
 }
 
 func (s *SSHExecutor) Close() error {
