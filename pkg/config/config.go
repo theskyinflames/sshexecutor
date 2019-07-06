@@ -13,7 +13,6 @@ type (
 		DefaultSSHCommandTimeout time.Duration `env:"SSH_EXECUTOR_API_DEFAULT_SSH_TIMEOUT" required:"true"`
 		SSHUser                  string        `env:"SSH_EXECUTOR_USER" required:"true"`
 		SSHPassword              string        `env:"SSH_EXECUTOR_PASSWORD" required:"true"`
-		SSHPublicKey             []byte        `env:"SSH_EXECUTOR_PUBLIC_KEY"`
 	}
 )
 

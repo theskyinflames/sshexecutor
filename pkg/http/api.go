@@ -91,7 +91,7 @@ func (api *API) runRecipe(c *gin.Context) {
 		return
 	}
 
-	ssh := ssh.NewSSHExecutorServer(rq.Host, rq.Port, api.cfg.SSHUser, api.cfg.SSHPassword, api.cfg.SSHPublicKey, api.cfg, api.log)
+	ssh := ssh.NewSSHExecutorServer(rq.Host, rq.Port, api.cfg.SSHUser, api.cfg.SSHPassword, api.cfg, api.log)
 	result, err := api.controller.RunRecipe(ssh, &rq)
 	if err != nil {
 		api.log.WithFields(logrus.Fields{"error": err.Error()}).Error("something went wrong starting the running the recipe")

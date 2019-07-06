@@ -21,7 +21,6 @@ type (
 		port     int
 		user     string
 		password string // It's also used as sudoer password
-		pubKey   []byte
 		client   *ssh.Client
 
 		cfg *config.Config
@@ -62,18 +61,11 @@ var (
 	}
 )
 
-func NewSSHExecutorServer(host string, port int, user, password string, pubKey []byte, cfg *config.Config, log *logrus.Logger) *SSHExecutor {
-	return &SSHExecutor{host: host, port: port, user: user, password: password, pubKey: pubKey, cfg: cfg, log: log}
+func NewSSHExecutorServer(host string, port int, user, password string, cfg *config.Config, log *logrus.Logger) *SSHExecutor {
+	return &SSHExecutor{host: host, port: port, user: user, password: password, cfg: cfg, log: log}
 }
 
 func (s *SSHExecutor) getAuthMethod() (ssh.AuthMethod, error) {
-	if len(s.pubKey) > 0 {
-		signer, err := ssh.ParsePrivateKey(s.pubKey)
-		if err != nil {
-			return nil, err
-		}
-		return ssh.PublicKeys(signer), nil
-	}
 	return ssh.Password(s.password), nil
 }
 
