@@ -36,6 +36,7 @@ var (
 			case <-endChan:
 				break
 			default:
+				//TODO: Refactor it
 				mtx.Lock()
 				if output.Len() > 0 {
 					msg := string(output.Bytes())
