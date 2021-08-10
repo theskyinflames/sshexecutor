@@ -114,7 +114,7 @@ func (s *SSHExecutor) Connect(timeout time.Duration) error {
 		time.Sleep(connCheckingInterval)
 	}
 
-	return fmt.Errorf("it has not been possible to connect to %s by ssh on port %s", host)
+	return fmt.Errorf("it has not been possible to connect to %s by ssh on port %d", s.host, s.port)
 }
 
 func (s *SSHExecutor) Close() error {
