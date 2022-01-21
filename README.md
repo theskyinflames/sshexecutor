@@ -12,7 +12,7 @@ On another hand, future versions of this service will allow the use of key excha
 Saying that still is necessary to fill the SSH user password as an environment variable for the service. You should inject it into the container when it starts in a safe way.
 
 ## Not supported commands
-It's not supported the shell commands with 'su', like 'sudo su *another user*'. It's because the 'su' command starts a new shell process for the new user. When that occurs, these new shell has its own stdout,stdin and stderr. Wich can't be captured by the ssh client. From there execution flux is lost and the recipe hangs.
+It's not supported the shell commands with 'su', like 'sudo su *another user*'. It's because the 'su' command starts a new shell process for the new user. When that occurs, these new shell has its own stdout,stdin and stderr. Which can't be captured by the ssh client. From there execution flux is lost and the recipe hangs.
 
 ## Configuration
 There are six environment variables which must be set to make the service run:
