@@ -6,7 +6,7 @@ require (
 	github.com/codingconcepts/env v0.0.0-20190614135724-bb4545dff6a4
 	github.com/gin-contrib/expvar v0.0.0-20190528084247-3fdc2a24f82a
 	github.com/gin-gonic/contrib v0.0.0-20190526021735-7fb7810ed2a0
-	github.com/gin-gonic/gin v1.7.3
+	github.com/gin-gonic/gin v1.7.7
 	github.com/go-playground/validator/v10 v10.9.0 // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/json-iterator/go v1.1.11 // indirect
