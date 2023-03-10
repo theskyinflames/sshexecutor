@@ -1,3 +1,5 @@
+[![Go Report Card](https://goreportcard.com/badge/github.com/theskyinflames/sshexecutor)](https://goreportcard.com/report/github.com/theskyinflames/sshexecutor)
+
 # SSH Executor
 This is a service to execute receipts (sequence of shell commands)  to remote servers by ssh. **Included sudo commands !!!** In addition, it returns in its response the standard-output, as well as the standard-error for each executed command. 
 Every call to the service can launch so many commands as it's required.
