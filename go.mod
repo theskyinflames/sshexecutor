@@ -12,6 +12,6 @@ require (
 	github.com/rogpeppe/go-internal v1.8.0 // indirect
 	github.com/sirupsen/logrus v1.4.2
 	github.com/ugorji/go v1.2.6 // indirect
-	golang.org/x/crypto v0.9.0
+	golang.org/x/crypto v0.17.0
 	gopkg.in/check.v1 v1.0.0-20201130134442-10cb98267c6c // indirect
 )
